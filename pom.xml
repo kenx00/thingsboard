@@ -16,17 +16,15 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.thingsboard</groupId>
     <artifactId>thingsboard</artifactId>
     <version>4.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-
     <name>Thingsboard</name>
     <url>https://thingsboard.io</url>
     <inceptionYear>2016</inceptionYear>
-
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
@@ -153,12 +151,10 @@
         <webdrivermanager.version>5.8.0</webdrivermanager.version>
         <allure-testng.version>2.27.0</allure-testng.version>
         <allure-maven.version>2.12.0</allure-maven.version>
-
         <opensmpp.version>3.0.2</opensmpp.version>
         <jgit.version>6.9.0.202403050737-r</jgit.version>
         <exp4j.version>0.4.8</exp4j.version>
         <aerogear-otp.version>1.0.0</aerogear-otp.version>
-
         <slack-api.version>1.39.0</slack-api.version>
         <oshi.version>6.6.0</oshi.version>
         <google-oauth-client.version>1.35.0</google-oauth-client.version>
@@ -166,7 +162,6 @@
         <drewnoakes-metadata-extractor.version>2.19.0</drewnoakes-metadata-extractor.version>
         <firebase-admin.version>9.2.0</firebase-admin.version>
     </properties>
-
     <modules>
         <module>netty-mqtt</module>
         <module>common</module>
@@ -180,13 +175,21 @@
         <module>rest-client</module>
         <module>monitoring</module>
     </modules>
-
     <profiles>
         <profile>
             <id>default</id>
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+        </profile>
+        <profile>
+            <id>skip-tests</id>
+            <activation>
+                <activeByDefault>true</activeByDefault> <!-- Only activated explicitly -->
+            </activation>
+            <properties>
+                <skipTests>true</skipTests>
+            </properties>
         </profile>
         <!-- download sources under target/dependencies -->
         <!-- mvn package -Pdownload-dependencies -Dclassifier=sources dependency:copy-dependencies -->
@@ -197,7 +200,6 @@
                 <downloadJavadocs>true</downloadJavadocs>
             </properties>
         </profile>
-
         <profile>
             <id>packaging</id>
             <activation>
@@ -296,44 +298,6 @@
                                     </configuration>
                                 </execution>
                                 <execution>
-                                    <id>copy-win-conf</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}/conf</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>src/main/resources</directory>
-                                                <excludes>
-                                                    <exclude>logback.xml</exclude>
-                                                    <exclude>${pkg.name}.yml</exclude>
-                                                </excludes>
-                                                <filtering>false</filtering>
-                                            </resource>
-                                            <resource>
-                                                <directory>src/main/resources</directory>
-                                                <includes>
-                                                    <include>${pkg.name}.yml</include>
-                                                </includes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                            <resource>
-                                                <directory>src/main/conf</directory>
-                                                <excludes>
-                                                    <exclude>${pkg.name}.conf</exclude>
-                                                </excludes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
                                     <id>copy-control</id>
                                     <phase>${pkg.process-resources.phase}</phase>
                                     <goals>
@@ -376,49 +340,6 @@
                                     </configuration>
                                 </execution>
                                 <execution>
-                                    <id>copy-windows-control</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>${main.dir}/packaging/${pkg.type}/scripts/windows</directory>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
-                                    <id>copy-windows-install</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${pkg.win.dist}/install</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>${main.dir}/packaging/${pkg.type}/scripts/install</directory>
-                                                <includes>
-                                                    <include>logback.xml</include>
-                                                </includes>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                        <filters>
-                                            <filter>${main.dir}/packaging/${pkg.type}/filters/windows.properties
-                                            </filter>
-                                        </filters>
-                                    </configuration>
-                                </execution>
-                                <execution>
                                     <id>copy-data</id>
                                     <phase>${pkg.process-resources.phase}</phase>
                                     <goals>
@@ -439,47 +360,6 @@
                                                 <filtering>false</filtering>
                                             </resource>
                                         </resources>
-                                    </configuration>
-                                </execution>
-                                <execution>
-                                    <id>copy-docker-config</id>
-                                    <phase>${pkg.process-resources.phase}</phase>
-                                    <goals>
-                                        <goal>copy-resources</goal>
-                                    </goals>
-                                    <configuration>
-                                        <outputDirectory>${project.build.directory}</outputDirectory>
-                                        <resources>
-                                            <resource>
-                                                <directory>docker</directory>
-                                                <filtering>true</filtering>
-                                            </resource>
-                                        </resources>
-                                    </configuration>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-dependency-plugin</artifactId>
-                            <executions>
-                                <execution>
-                                    <id>copy-winsw-service</id>
-                                    <phase>${pkg.package.phase}</phase>
-                                    <goals>
-                                        <goal>copy</goal>
-                                    </goals>
-                                    <configuration>
-                                        <artifactItems>
-                                            <artifactItem>
-                                                <groupId>com.sun.winsw</groupId>
-                                                <artifactId>winsw</artifactId>
-                                                <classifier>bin</classifier>
-                                                <type>exe</type>
-                                                <destFileName>service.exe</destFileName>
-                                            </artifactItem>
-                                        </artifactItems>
-                                        <outputDirectory>${pkg.win.dist}</outputDirectory>
                                     </configuration>
                                 </execution>
                             </executions>
@@ -533,7 +413,6 @@
                                 <tasks>
                                     <task>build</task>
                                     <task>buildDeb</task>
-                                    <task>buildRpm</task>
                                 </tasks>
                                 <args>
                                     <arg>-PpackagingDir=${main.dir}/packaging</arg>
@@ -556,25 +435,6 @@
                                     <phase>${pkg.package.phase}</phase>
                                     <goals>
                                         <goal>invoke</goal>
-                                    </goals>
-                                </execution>
-                            </executions>
-                        </plugin>
-                        <plugin>
-                            <groupId>org.apache.maven.plugins</groupId>
-                            <artifactId>maven-assembly-plugin</artifactId>
-                            <configuration>
-                                <finalName>${pkg.name}</finalName>
-                                <descriptors>
-                                    <descriptor>${main.dir}/packaging/${pkg.type}/assembly/windows.xml</descriptor>
-                                </descriptors>
-                            </configuration>
-                            <executions>
-                                <execution>
-                                    <id>assembly</id>
-                                    <phase>${pkg.package.phase}</phase>
-                                    <goals>
-                                        <goal>single</goal>
                                     </goals>
                                 </execution>
                             </executions>
@@ -605,7 +465,6 @@
             </build>
         </profile>
     </profiles>
-
     <build>
         <extensions>
             <extension>
@@ -734,11 +593,9 @@
                           protobuf-java directly, you will be transitively depending on the
                           protobuf-java version that grpc depends on.
                         -->
-                        <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}
-                        </protocArtifact>
+                        <protocArtifact>com.google.protobuf:protoc:${protobuf.version}:exe:${os.detected.classifier}</protocArtifact>
                         <pluginId>grpc-java</pluginId>
-                        <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}
-                        </pluginArtifact>
+                        <pluginArtifact>io.grpc:protoc-gen-grpc-java:${grpc.version}:exe:${os.detected.classifier}</pluginArtifact>
                     </configuration>
                     <executions>
                         <execution>
@@ -792,7 +649,7 @@
                                         </goals>
                                     </pluginExecutionFilter>
                                     <action>
-                                        <ignore></ignore>
+                                        <ignore />
                                     </action>
                                 </pluginExecution>
                             </pluginExecutions>
@@ -884,10 +741,10 @@
                     <configuration>
                         <generateGitPropertiesFile>true</generateGitPropertiesFile>
                         <generateGitPropertiesFilename>${project.build.outputDirectory}/git.properties</generateGitPropertiesFilename>
-<!--                        <includeOnlyProperties>-->
-<!--                            <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>-->
-<!--                            <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>-->
-<!--                        </includeOnlyProperties>-->
+                        <!--                        <includeOnlyProperties>-->
+                        <!--                            <includeOnlyProperty>^git.build.(time|version)$</includeOnlyProperty>-->
+                        <!--                            <includeOnlyProperty>^git.commit.id.(abbrev|full)$</includeOnlyProperty>-->
+                        <!--                        </includeOnlyProperties>-->
                         <commitIdGenerationMode>full</commitIdGenerationMode>
                     </configuration>
                 </plugin>
@@ -900,7 +757,6 @@
             </plugin>
         </plugins>
     </build>
-
     <dependencies>
         <dependency>
             <groupId>org.projectlombok</groupId>
@@ -908,7 +764,6 @@
             <scope>provided</scope>
         </dependency>
     </dependencies>
-
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -2281,7 +2136,6 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
     <distributionManagement>
         <repository>
             <id>thingsboard-repo-deploy</id>
@@ -2289,7 +2143,6 @@
             <url>https://repo.thingsboard.io/artifactory/libs-release-public</url>
         </repository>
     </distributionManagement>
-
     <repositories>
         <repository>
             <id>central</id>
