@@ -65,38 +65,8 @@ ospackage {
 
 }
 
-// Configure our RPM build task
-buildRpm {
-
-    arch = X86_64
-
-    archiveVersion = projectVersion.replace('-', '')
-    archiveFileName = "${pkgName}.rpm"
-
-    preInstall file("${buildDir}/control/rpm/preinst")
-    postInstall file("${buildDir}/control/rpm/postinst")
-    preUninstall file("${buildDir}/control/rpm/prerm")
-    postUninstall file("${buildDir}/control/rpm/postrm")
-
-    user pkgUser
-    permissionGroup pkgUser
-
-    // Copy the system unit files
-    from("${buildDir}/control/template.service") {
-        addParentDirs = false
-        fileMode 0644
-        into "/usr/lib/systemd/system"
-        rename { String filename ->
-            "${pkgName}.service"
-        }
-    }
-
-    link("/etc/${pkgName}/conf", "${pkgInstallFolder}/conf")
-}
-
 // Same as the buildRpm task
 buildDeb {
-
     arch = "amd64"
 
     archiveFileName = "${pkgName}.deb"
