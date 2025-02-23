@@ -2,12 +2,12 @@
 
 ThingsBoard is an open-source IoT platform for data collection, processing, visualization, and device management.
 
-!!! Please refer official github repository for the full thingsboard.
-This git version is specific for Visual Studio Code + Ubuntu use and there are several Windows related and black-box-tests related are removed so to optimize for local development.
+!!! Please refer official github repository for the full thingsboard. This git version is specific for Visual Studio Code + Ubuntu use and there are several Windows related and black-box-tests related are removed so to optimize for local development.
 
-##  Basic Information
+## Basic Information
 
 The build environment info.
+
 - Intel Core i7-10700
 - RAM 64.0 GiB
 - SSD 1.0 TB
@@ -16,15 +16,19 @@ The build environment info.
 - Linux 6.8.0-53-generic
 
 Tools
+
 - Visual Studio Code
 - Java
+
 ```bash
 $ java --version
 openjdk 17.0.14 2025-01-21
 OpenJDK Runtime Environment (build 17.0.14+7-Ubuntu-124.04)
 OpenJDK 64-Bit Server VM (build 17.0.14+7-Ubuntu-124.04, mixed mode, sharing)
 ```
+
 - Maven
+
 ```bash
 $ mvn --version
 Apache Maven 3.9.9 (8e8579a9e76f7d015ee5ec7bfcdc97d260186937)
@@ -33,14 +37,18 @@ Java version: 17.0.14, vendor: Ubuntu, runtime: /usr/lib/jvm/java-17-openjdk-amd
 Default locale: en_HK, platform encoding: UTF-8
 OS name: "linux", version: "6.8.0-53-generic", arch: "amd64", family: "unix"
 ```
+
 - Protoc (Ubuntu apt included is old version - use this one https://github.com/protocolbuffers/protobuf/releases/download/v25.5/protoc-25.5-linux-x86_64.zip)
+
 ```bash
 $ protoc --version
 libprotoc 25.5
 $ which protoc
 /usr/local/protoc/bin/protoc
 ```
+
 - fvm (for flutter application development use - need 3.24.4)
+
 ```bash
 $ fvm --version
 3.2.1
@@ -56,7 +64,9 @@ Directory Size: 1.76 GB
 │ 3.24.4  │ stable  │ 3.24.4          │ 3.5.4        │ Oct 24, 2024 │        │       │
 └─────────┴─────────┴─────────────────┴──────────────┴──────────────┴────────┴───────┘
 ```
+
 - flutter (for flutter application development use - install also Android Studio, Intellij Idea is not necessary)
+
 ```bash
 $ fvm flutter doctor -v
 
@@ -116,12 +126,16 @@ $ fvm flutter doctor -v
 
 • No issues found!
 ```
+
 - docker
+
 ```bash
 $ docker --version
 Docker version 27.3.1, build ce12230
 ```
+
 - docker for Postgres (sample)
+
 ```bash
 services:
   postgres:
@@ -158,7 +172,9 @@ volumes:
   vPgadmin:
     external: true
 ```
+
 - Environment variable for Postgres
+
 ```bash
 vi /etc/environment
 # TB DB Configuration
@@ -170,7 +186,9 @@ export SPRING_DATASOURCE_PASSWORD=5G46RRANBPZS9GUB
 # TB Specify partitioning size for timestamp key-value storage. Allowed values: DAYS, MONTHS, YEARS, INDEFINITE.
 export SQL_POSTGRES_TS_KV_PARTITIONING=MONTHS
 ```
+
 - bashrc
+
 ```bash
 export MAVEN_OPTS="-Xmx16G -XX:+UseG1GC -XX:+UseStringDeduplication"
 export NODE_OPTIONS="--max-old-space-size=8192"
@@ -180,7 +198,7 @@ export PATH=$PATH:/home/XXX/Applications/Android/Sdk/platform-tools
 export PATH=$PATH:/usr/local/protoc/bin
 ```
 
-##  Installation
+## Installation
 
 - First clone this repository with Visual Studio Code (vsc)
 - Then wait for the vsc to auto first build
@@ -192,12 +210,15 @@ export PATH=$PATH:/usr/local/protoc/bin
 - Run and Debug
 - Open the browser to check http://localhost:8080 if can display the main page or return text error saying no static resources
   - If no static resources, in vsc terminal execute under project root
+
 ```bash
 Ctrl-Shift-B manually trigger java (build): Build Workspace <= this one will trigger protoc to generate those proto java
 ./build_proto.sh
 ./build.sh
 ```
-- Above build.sh step may repeat few times so to ensure no all success
+
+- Above build.sh step may repeat few times so to ensure all success
+
 ```bash
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for Thingsboard 4.0.0-SNAPSHOT:
@@ -264,7 +285,11 @@ Ctrl-Shift-B manually trigger java (build): Build Workspace <= this one will tri
 [INFO] Finished at: 2025-02-23T22:26:23+08:00
 [INFO] ------------------------------------------------------------------------
 ```
+
 - Finally trigger vsc clear workspace
+
 ```bash
 Ctrl-Shift-P manually trigger Clear Java Language Server Workspace
 ```
+
+- If next time the vsc still have many proto related error, manual trigger Ctrl-Shift-B java (build) again
