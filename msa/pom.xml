@@ -16,7 +16,7 @@
 
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>org.thingsboard</groupId>
@@ -25,10 +25,8 @@
     </parent>
     <artifactId>msa</artifactId>
     <packaging>pom</packaging>
-
     <name>ThingsBoard Microservices</name>
     <url>https://thingsboard.io</url>
-
     <properties>
         <main.dir>${basedir}/..</main.dir>
         <docker.repo>thingsboard</docker.repo>
@@ -37,7 +35,6 @@
         <dockerfile-maven.version>1.4.13</dockerfile-maven.version>
         <docker.push-arm-amd-image.phase>none</docker.push-arm-amd-image.phase>
     </properties>
-
     <modules>
         <!--Modules order is important to speedup parallel build and avoid yarn pgk parallel execution-->
         <module>tb</module>
@@ -49,20 +46,7 @@
         <module>js-executor</module>
         <module>monitoring</module>
     </modules>
-
     <profiles>
-        <profile>
-            <id>black-box-tests</id>
-            <activation>
-                <property>
-                    <name>blackBoxTests.skip</name>
-                    <value>false</value>
-                </property>
-            </activation>
-            <modules>
-                <module>black-box-tests</module>
-            </modules>
-        </profile>
         <profile>
             <id>push-docker-amd-arm-images</id>
             <activation>
